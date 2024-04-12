@@ -1,5 +1,5 @@
 {
-  "name": "shardeum-dapp-boilerplate",
+  "name": "nfshards",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "axios": "^1.5.1",
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2",
+    "metamask": "^0.0.1-security",
     "next": "^13.5.4",
     "react": "^18",
     "react-dom": "^18",
@@ -35,6 +36,7 @@
     "@typechain/hardhat": "^6.1.6",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
+    "@types/react": "18.2.77",
     "chai": "^4.3.10",
     "hardhat": "^2.18.0",
     "hardhat-gas-reporter": "^1.0.9",
@@ -44,6 +46,6 @@
     "typescript": "^5.3.3"
   },
   "bin": {
-    "shardeum-dapp-boilerplate": "./src/pages/index.js"
+    "nfshards": "./src/pages/index.js"
   }
 }
