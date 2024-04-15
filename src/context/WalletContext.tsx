@@ -1,5 +1,6 @@
 import { createContext, useState, useCallback } from "react";
 import { ethers } from "ethers";
+import { Modal } from "antd"
 import React from 'react';
 
 
@@ -33,6 +34,27 @@ export const WalletProvider = ({ children }) => {
     const balance = await provider.getBalance(account);
     setBalance(ethers.utils.formatEther(balance));
   }, []);
+  
+  const addShardeumNetwork = async () => {
+    window.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainName: 'Shardeum Sphinx 1.X',
+          chainId: ethers.utils.hexlify(desiredNetwork),
+          nativeCurrency: { name: 'SHM', decimals: 18, symbol: 'SHM' },
+          rpcUrls: ['https://sphinx.shardeum.org']
+        }
+      ]
+    });
+  }
+
+  const switchToShardeumNetwork = async () => {
+     window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: ethers.utils.hexlify(desiredNetwork) }]
+    });
+  }
 
   const connectWallet = useCallback(async () => {
     if (window.ethereum) {
@@ -42,11 +64,14 @@ export const WalletProvider = ({ children }) => {
           .getNetwork()
           .then((network) => network.chainId);
         if (chainId !== desiredNetwork) {
-          alert({
-            title: "Wrong Network",
-            content: "Please connect to the Shardeum Sphinx network.",
-          });
-          return;
+          try {
+            await switchToShardeumNetwork();
+          } catch (err) {
+              // This error code indicates that the chain has not been added to MetaMask
+            if (err.code === 4902) {
+              await addShardeumNetwork(); 
+            }
+          }
         }
 
         // Set signer
@@ -63,7 +88,7 @@ export const WalletProvider = ({ children }) => {
         console.error(error);
       }
     } else {
-      alert({
+      Modal.error({
         title: "Metamask is not installed",
         content: "Please install it from https://metamask.io",
       });
