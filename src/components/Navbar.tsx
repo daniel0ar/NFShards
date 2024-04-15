@@ -77,10 +77,10 @@ const Navbar = () => {
             {connected ? (
                 <Space direction="horizontal" align="center">
                     <div className='flex flex-col items-end mr-3'>
-                        <Text className='text-white mb-1'>
+                        <Text className='mb-1'>
                             {selectedAddress.slice(0, 6) + "..." + selectedAddress.slice(-4)}
                         </Text>
-                        <Text className='text-white'>
+                        <Text>
                             {balance.slice(0,5)} SHM
                         </Text>
                     </div>
