@@ -75,17 +75,20 @@ const Navbar = () => {
             <Link href="/" className={`cursor-pointer hover:text-black dark:hover:text-gray-50 hover:underline`}>Home</Link>
             </nav>
             {connected ? (
-                <Space direction="horizontal" align="center">
+              <div className='flex items-center gap-3'>
+                <Button type="default" onClick={() => router.push('process')}>Shard NFT</Button>
+                <Space direction="horizontal" align="center" className='leading-normal'>
                     <div className='flex flex-col items-end mr-3'>
-                        <Text className='mb-1'>
+                        <p>
                             {selectedAddress.slice(0, 6) + "..." + selectedAddress.slice(-4)}
-                        </Text>
-                        <Text>
+                        </p>
+                        <p>
                             {balance.slice(0,5)} SHM
-                        </Text>
+                        </p>
                     </div>
                     <Button type="primary" shape="circle" onClick={() => setVisible(true)} />
                 </Space>
+              </div>
             ) : (
                 <Button type="primary" onClick={connectWallet}>Connect Wallet</Button>
             )}
