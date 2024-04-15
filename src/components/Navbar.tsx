@@ -67,20 +67,20 @@ const Navbar = () => {
   };
 
     return (
-        <Header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Header className='flex justify-between items-center bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-100'>
             <Link href="/">
-            <Image src="/logo.png" alt="Logo" height={32} width={140} style={{ marginRight: '10px', marginTop: '30px' }} />
+            <Image src="/logo.png" alt="Logo" height={32} width={140} className='mr-4' />
             </Link>
-            <nav style={{ display: 'flex', gap: '20px' }}>
-            <Link href="/" style={{ color: router.pathname === '/' ? '#A4FF00' : 'white', cursor: 'pointer' }}>Home</Link>
+            <nav className='flex gap-5'>
+            <Link href="/" className={`cursor-pointer hover:text-black dark:hover:text-gray-50 hover:underline`}>Home</Link>
             </nav>
             {connected ? (
                 <Space direction="horizontal" align="center">
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', marginRight: '10px' }}>
-                        <Text style={{ color: 'white', marginBottom: '5px' }}>
+                    <div className='flex flex-col items-end mr-3'>
+                        <Text className='text-white mb-1'>
                             {selectedAddress.slice(0, 6) + "..." + selectedAddress.slice(-4)}
                         </Text>
-                        <Text style={{ color: 'white' }}>
+                        <Text className='text-white'>
                             {balance.slice(0,5)} SHM
                         </Text>
                     </div>
