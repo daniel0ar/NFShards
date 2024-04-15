@@ -8,7 +8,7 @@ function App({ Component, pageProps }) {
     <div>
       <WalletProvider>
         <Navbar/>
-        <div className='container mx-auto dark:bg-grey-800 dark:text-white'>
+        <div className='container mx-auto'>
           <Component {...pageProps} />
         </div>
       </WalletProvider>

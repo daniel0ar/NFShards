@@ -7,6 +7,8 @@ import { useCallback, useContext, useEffect } from 'react';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { useRouter } from 'next/router';
 import { WalletContext } from '@/context/WalletContext';
+import Logo from 'public/logo.png';
+import LogoWhite from 'public/logo_white.png';
 
 const { Header } = Layout;
 const { Text } = Typography;
@@ -69,7 +71,13 @@ const Navbar = () => {
     return (
         <Header className='flex justify-between items-center bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-100'>
             <Link href="/">
-            <Image src="/logo.png" alt="Logo" height={32} width={140} className='mr-4' />
+            <picture>
+              <source srcSet={LogoWhite.src} media="(prefers-color-scheme: dark)" />
+              <Image
+                  src={Logo}
+                  alt="Logo" height={32} width={140} className='mr-4'
+              />
+            </picture>
             </Link>
             <nav className='flex gap-5'>
             <Link href="/" className={`cursor-pointer hover:text-black dark:hover:text-gray-50 hover:underline`}>Home</Link>
