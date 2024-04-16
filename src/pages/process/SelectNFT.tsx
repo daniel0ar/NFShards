@@ -1,10 +1,9 @@
 import NFTCard from "@/components/NFTCard";
-import { nfts } from "@/data";
+import { useOwnedNFTList } from "@/hooks";
 import React from "react";
 
-type Props = {};
-
-const SelectNFT = (props: Props) => {
+const SelectNFT = () => {
+  const nfts = useOwnedNFTList("0x33aaDa02c476229251Ae0aa211ea1E1bF125Dd51")
   return (
     <div>
       <div className="mb-10">
