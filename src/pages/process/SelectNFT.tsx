@@ -17,7 +17,7 @@ const SelectNFT = () => {
           <p>Which of your NFTs would you like to divide into token fractions?</p>
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-10">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
           {nfts.length > 0 ? (
             nfts.map((nft, index) => <NFTCard key={index} nft={nft}></NFTCard>)
           ) : (
