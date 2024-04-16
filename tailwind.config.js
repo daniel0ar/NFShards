@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'muted': 'rgb(148 163 184)',
+      },
       gridTemplateRows: {
         "process": "10vh 60vh 10vh",
       },
