@@ -6,10 +6,10 @@ import React, { useContext } from "react";
 
 const SelectNFT = () => {
   const { selectedAddress } = useContext(WalletContext);
-  const nfts = useOwnedNFTList("0x33aaDa02c476229251Ae0aa211ea1E1bF125Dd51");
+  const nfts = useOwnedNFTList(selectedAddress);
   return (
     <>
-      <div className="">
+      <div>
         <div className="mb-10">
           <h1 className="text-5xl leading-normal font-bold">
             Select NFT to shard

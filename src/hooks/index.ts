@@ -5,12 +5,13 @@ export const useOwnedNFTList = (userAddress: string) => {
 
   useEffect(() => {
     const fetchNFTs = async () => {
-      const response = await fetch(`https://shm-indexer.zezu.io/v1/erc721-owners?owner_of=${userAddress}`);
+      const response = await fetch(
+        `https://shm-indexer.zezu.io/v1/erc721-owners?owner_of=${userAddress}`
+      );
       const json = await response.json();
       setNfts(json.results);
     };
-
-    fetchNFTs();
+    if (userAddress) fetchNFTs();
   }, [userAddress]);
 
   return nfts;
