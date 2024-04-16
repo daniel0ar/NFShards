@@ -29,14 +29,16 @@ const NFTCard = ({nft}: Props) => {
   }
 
   return (
-    <Card
-    hoverable
-    onClick={handleSelect}
-    className={`w-64 ${selected ? 'border-2 border-blue-900' : ''}`}
-    cover={<Image alt="example" width={200} height={200} src={nft.uri_media ?? PlaceholderImg} />}
-  >
-    <Meta title={nft.name} description={nft.token_id} />
-  </Card>
+    <div className="col-span-1">
+      <Card
+      hoverable
+      onClick={handleSelect}
+      className={`${selected ? 'border-2 border-blue-900' : ''}`}
+      cover={<Image alt="example" width={200} height={200} src={nft.uri_media ?? PlaceholderImg} />}
+    >
+      <Meta title={nft.name} description={nft.token_id} />
+    </Card>
+    </div>
   )
 }
 

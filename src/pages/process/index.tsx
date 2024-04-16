@@ -32,7 +32,7 @@ const Process = () => {
         {getComponent()}
 
         <footer
-          className={`flex items-center px-20 pb-4 border-t-4 border-t-gray-300 ${
+          className={`flex items-center pb-4 border-t-4 border-t-gray-300 ${
             step > 0 ? "justify-between" : "justify-end"
           }`}
         >

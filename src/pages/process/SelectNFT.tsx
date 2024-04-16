@@ -6,10 +6,10 @@ import React, { useContext } from "react";
 
 const SelectNFT = () => {
   const { selectedAddress } = useContext(WalletContext);
-  const nfts = useOwnedNFTList(selectedAddress);
+  const nfts = useOwnedNFTList("0x33aaDa02c476229251Ae0aa211ea1E1bF125Dd51");
   return (
     <>
-      <div className="flex flex-col items-left mx-20 mb-10">
+      <div className="">
         <div className="mb-10">
           <h1 className="text-5xl leading-normal font-bold">
             Select NFT to shard
@@ -17,7 +17,7 @@ const SelectNFT = () => {
           <p>Which of your NFTs would you like to divide into token fractions?</p>
         </div>
       </div>
-      <div className="grid grid-cols-4">
+      <div className="grid grid-cols-4 gap-10">
           {nfts.length > 0 ? (
             nfts.map((nft, index) => <NFTCard key={index} nft={nft}></NFTCard>)
           ) : (

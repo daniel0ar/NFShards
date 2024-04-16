@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateRows: {
-        "process": "5vh 70vh 10vh",
+        "process": "10vh 60vh 10vh",
       },
     },
   },
