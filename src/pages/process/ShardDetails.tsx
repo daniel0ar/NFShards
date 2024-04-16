@@ -23,7 +23,7 @@ const ShardDetails = (props: Props) => {
             <p>Token Id: {nftTokenId}</p>
           </div>
         ) : (
-          <div className="text-center col-span-4 py-10">No NFT selected</div>
+          <div className="text-center py-10">No NFT selected</div>
         )}
       </div>
     </>

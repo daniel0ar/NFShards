@@ -21,7 +21,7 @@ const SelectNFT = () => {
           {nfts.length > 0 ? (
             nfts.map((nft, index) => <NFTCard key={index} nft={nft}></NFTCard>)
           ) : (
-            <div className="text-center col-span-4 py-10">
+            <div className="text-center col-span-full py-10">
               <div className="flex flex-col items-center gap-3">
                 <span className="text-slate-400">No NFTs found</span>
                 <Button type="primary">Mint One</Button>
