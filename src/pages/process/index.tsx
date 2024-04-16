@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Overview from "./Overview";
 import SelectNFT from "./SelectNFT";
 import { Button } from "antd";
 import { ProcessProvider } from "@/context/ProcessContext";
+import ShardDetails from "./ShardDetails";
 
 const Process = () => {
   const [step, setStep] = useState(0);
@@ -10,9 +10,9 @@ const Process = () => {
   const getComponent = () => {
     switch (step) {
       case 0:
-        return <Overview></Overview>;
-      case 1:
         return <SelectNFT></SelectNFT>;
+      case 1:
+        return <ShardDetails></ShardDetails>;
       default:
         return <></>;
     }
@@ -28,7 +28,7 @@ const Process = () => {
 
   return (
     <ProcessProvider>
-      <div className="grid grod-rows-process h-[100vh]">
+      <div className="grid grid-rows-process gap-10">
         {getComponent()}
 
         <footer
@@ -52,7 +52,7 @@ const Process = () => {
               size="large"
               onClick={handleNext}
             >
-              Next
+              Shard
             </Button>
           ) : (
             <Button
@@ -61,7 +61,7 @@ const Process = () => {
               className="mt-5 px-5 text-base font-medium rounded-md"
               onClick={handleNext}
             >
-              Get Started
+              Next
             </Button>
           )}
         </footer>

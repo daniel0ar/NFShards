@@ -5,7 +5,11 @@ module.exports = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateRows: {
+        "process": "5vh 70vh 10vh",
+      },
+    },
   },
   plugins: [],
 }
