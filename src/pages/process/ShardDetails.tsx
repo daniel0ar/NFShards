@@ -1,5 +1,5 @@
 import { ProcessContext } from "@/context/ProcessContext";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Card,
@@ -27,8 +27,27 @@ const formItemLayout = {
 
 const ShardDetails = () => {
   const { nftCollectionAddress, nftTokenId } = useContext(ProcessContext);
+  const [shardsNumber, setShardsNumber] = useState(null);
+  const [shardPrice, setShardPrice] = useState(null);
+  const [minShards, setMinShards] = useState(null);
 
-  const items: DescriptionsProps["items"] = [];
+  const items: DescriptionsProps["items"] = [
+    {
+      key:"1",
+      label: "Number of Shards",
+      children: <p>{shardsNumber}</p>
+    },
+    {
+      key: "2",
+      label: "Shard Price",
+      children: <p>{shardPrice}</p>
+    },
+    {
+      key: "3",
+      label: "Mininum Purchase Shards",
+      children: <p>{minShards}</p>,
+    },
+  ];
 
   return (
     <>
@@ -69,14 +88,14 @@ const ShardDetails = () => {
                   name="shardNumber"
                   rules={[{ required: true, message: "Please input!" }]}
                 >
-                  <InputNumber className="w-full"/>
+                  <Input className="w-full" value={shardsNumber} onChange={(e) => setShardsNumber(e.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   label="Mininum Purchase Shards"
                   name="minShards"
                 >
-                  <InputNumber className="w-full"/>
+                  <Input className="w-full" value={minShards} onChange={(e) => setMinShards(e.target.value)}/>
                 </Form.Item>
 
                 <Form.Item
@@ -84,7 +103,7 @@ const ShardDetails = () => {
                   name="price"
                   rules={[{ required: true, message: "Please input!" }]}
                 >
-                  <InputNumber className="w-full"/>
+                  <Input className="w-full" value={shardPrice} onChange={(e) => setShardPrice(e.target.value)}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 6, span: 16 }} hidden>
@@ -114,8 +133,7 @@ const ShardDetails = () => {
                 <Descriptions
                   items={items}
                   column={1}
-                  labelStyle={{ width: 100 }}
-                  contentStyle={{ width: 100, justifyContent: "right", textAlign: "right" }}
+                  contentStyle={{ justifyContent: "right", textAlign: "right" }}
                   className="dark:!text-white"
                 />
               </Card>

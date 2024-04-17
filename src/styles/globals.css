@@ -12,10 +12,10 @@
   :where(.css-dev-only-do-not-override-amq5gd).ant-card .ant-card-meta-description {
     color: white !important;
   }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-input-number {
+  .ant-form-item-control-input-content .ant-input-status-success {
     background-color: transparent !important;
   }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-input-number .ant-input-number-input {
+  .ant-form-item-control-input-content .ant-input-status-success {
     color: white !important;
   }
 
