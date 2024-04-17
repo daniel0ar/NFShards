@@ -50,7 +50,8 @@ const Process = () => {
               type="primary"
               className="mt-5 px-10 text-base font-medium rounded-md"
               size="large"
-              onClick={handleNext}
+              form="shard-form"
+              htmlType="submit"
             >
               Shard
             </Button>

@@ -1,5 +1,5 @@
 import { ProcessContext } from "@/context/ProcessContext";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   Button,
   Card,
@@ -30,6 +30,12 @@ const ShardDetails = () => {
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
+  const submitBtnRef = useRef(null);
+  const [form] = Form.useForm();
+
+  const handleSubmit = (data: any) => {
+    console.log("Submitted data is: ", data);
+  }
 
   const items: DescriptionsProps["items"] = [
     {
@@ -63,7 +69,7 @@ const ShardDetails = () => {
         {nftCollectionAddress && nftTokenId ? (
           <Row>
             <Col span={16}>
-              <Form {...formItemLayout}>
+              <Form {...formItemLayout} onSubmitCapture={handleSubmit} id="shard-form">
                 <h2 className="text-3xl font-bold">Details</h2>
                 <Form.Item
                   label="Collection Address"
