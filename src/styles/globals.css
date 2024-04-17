@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (prefers-color-scheme: dark) {
+  :where(.css-dev-only-do-not-override-amq5gd).ant-form-item .ant-form-item-label > label {
+    color: white !important;
+  }
+  :where(.css-dev-only-do-not-override-amq5gd).ant-card .ant-card-meta-title {
+    color: white !important;
+  }
+  :where(.css-dev-only-do-not-override-amq5gd).ant-card .ant-card-meta-description {
+    color: white !important;
+  }
+  :where(.css-dev-only-do-not-override-amq5gd).ant-input-number {
+    background-color: transparent !important;
+  }
+  :where(.css-dev-only-do-not-override-amq5gd).ant-input-number .ant-input-number-input {
+    color: white !important;
+  }
+
+  .ant-descriptions .ant-descriptions-item-label{
+    color: rgb(145, 145, 145) !important;
+  }
+
+  .ant-descriptions .ant-descriptions-item-content{
+    color: white !important;
+  }
+}

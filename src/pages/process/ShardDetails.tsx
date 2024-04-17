@@ -131,7 +131,7 @@ const ShardDetails = (props: Props) => {
               </Form>
             </Col>
             <Col span={8}>
-              <Card>
+              <Card className="dark:bg-gray-800 dark:text-white border-gray-700">
                 <div className="flex flex-col gap-5 mb-10">
                   <h2 className="text-3xl font-bold">Summary</h2>
                   <p className="text-muted">Review this final summary before you shard your NFT. Once you slice, you cannot make changes.</p>
@@ -152,6 +152,7 @@ const ShardDetails = (props: Props) => {
                   column={1}
                   labelStyle={{ width: 100 }}
                   contentStyle={{ width: 100, justifyContent: "right", textAlign: "right" }}
+                  className="dark:!text-white"
                 />
               </Card>
             </Col>
