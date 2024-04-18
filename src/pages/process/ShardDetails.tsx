@@ -13,6 +13,9 @@ import {
   Row,
 } from "antd";
 import Image from "next/image";
+import { config } from "@/config";
+import { ethers } from "ethers";
+import { WalletContext } from "@/context/WalletContext";
 
 
 const formItemLayout = {
@@ -35,14 +38,21 @@ type FieldType = {
 };
 
 const ShardDetails = () => {
-  const { nftCollectionAddress, nftTokenId } = useContext(ProcessContext);
+  const { signer } = useContext(WalletContext);
+  const { nftCollectionAddress, nftTokenId, nftName, nftSymbol } = useContext(ProcessContext);
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
+  const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
 
+  const deployShardContract = async () => {
+    const deploy = await factoryContract.deployNFShard(nftName, nftSymbol, nftCollectionAddress, nftTokenId, shardsNumber, shardPrice, minShards);
+    console.log(deploy);
+  }
   
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
+    deployShardContract();
   };
   
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
