@@ -8,13 +8,13 @@ const hre = require("hardhat");
 
 async function main() {
 
-  const Contract = await hre.ethers.getContractFactory("<<Contract Name>>");
-  const contract = await Contract.deploy();
+  const FactoryContract = await hre.ethers.getContractFactory("NFShardsFactory");
+  const factoryContract = await FactoryContract.deploy();
 
-  await contract.deployed();
+  await factoryContract.deployed();
 
   console.log(
-    `Contract deployed to ${contract.address}`
+    `NFShardsFactory deployed to ${factoryContract.address}`
   );
 }
 
