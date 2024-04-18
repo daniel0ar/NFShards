@@ -10,8 +10,8 @@ const SelectNFT = () => {
   return (
     <>
       <div>
-        <div className="mb-10">
-          <h1 className="text-5xl leading-normal font-bold">
+        <div className="mt-10">
+          <h1 className="text-2xl md:text-5xl leading-normal font-bold">
             Select NFT to shard
           </h1>
           <p>Which of your NFTs would you like to divide into token fractions?</p>

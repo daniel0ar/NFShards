@@ -69,7 +69,7 @@ const Navbar = () => {
   };
 
     return (
-        <Header className='flex justify-between items-center bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-100'>
+        <Header className='flex justify-between items-center bg-white dark:bg-zinc-900 text-gray-600 dark:text-gray-100'>
             <Link href="/">
             <picture>
               <source srcSet={LogoWhite.src} media="(prefers-color-scheme: dark)" />

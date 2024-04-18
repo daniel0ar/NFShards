@@ -28,7 +28,7 @@ const Process = () => {
 
   return (
     <ProcessProvider>
-      <div className="grid grid-rows-process gap-10">
+      <div className="grid grid-rows-process gap-10 p-4">
         {getComponent()}
 
         <footer

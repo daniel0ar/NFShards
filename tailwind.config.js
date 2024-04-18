@@ -8,11 +8,12 @@ module.exports = {
     extend: {
       colors: {
         "muted": "rgb(148 163 184)",
-        "primary": "black",
-        "secondary": "white"
+        "primary": "#09090b",
+        "secondary": "#18181b",
+        "tertiary": "#27272a",
       },
       gridTemplateRows: {
-        "process": "10vh 60vh 10vh",
+        "process": "15vh 55vh 8vh",
       },
       backgroundImage: {
         'hero-pattern': "url(/patacon-bg.png)"

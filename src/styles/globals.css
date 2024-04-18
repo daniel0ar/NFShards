@@ -3,15 +3,20 @@
 @tailwind utilities;
 
 @media (prefers-color-scheme: dark) {
-  :where(.css-dev-only-do-not-override-amq5gd).ant-form-item .ant-form-item-label > label {
+  .ant-form-item .ant-form-item-label > label {
     color: white !important;
   }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-card .ant-card-meta-title {
+  .ant-card .ant-card-meta-title {
     color: white !important;
   }
-  :where(.css-dev-only-do-not-override-amq5gd).ant-card .ant-card-meta-description {
+  .ant-card .ant-card-meta-description {
     color: white !important;
   }
+
+  .ant-card, .ant-card h2 {
+    color: white !important;
+  }
+
   .ant-form-item-control-input-content .ant-input-status-success {
     background-color: transparent !important;
   }
