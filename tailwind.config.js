@@ -7,7 +7,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'muted': 'rgb(148 163 184)',
+        "muted": "rgb(148 163 184)",
+        "primary": "black",
+        "secondary": "white"
       },
       gridTemplateRows: {
         "process": "10vh 60vh 10vh",
