@@ -7,6 +7,7 @@ import {
   Descriptions,
   DescriptionsProps,
   Form,
+  FormProps,
   Input,
   InputNumber,
   Row,
@@ -25,17 +26,28 @@ const formItemLayout = {
   },
 };
 
+type FieldType = {
+  collectionAddress?: string;
+  tokenId?: string;
+  shardNumber?: number;
+  minShards?: number;
+  price?: number;
+};
+
 const ShardDetails = () => {
   const { nftCollectionAddress, nftTokenId } = useContext(ProcessContext);
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
-  const submitBtnRef = useRef(null);
-  const [form] = Form.useForm();
 
-  const handleSubmit = (data: any) => {
-    console.log("Submitted data is: ", data);
-  }
+  
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    console.log('Success:', values);
+  };
+  
+  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
   const items: DescriptionsProps["items"] = [
     {
@@ -69,7 +81,9 @@ const ShardDetails = () => {
         {nftCollectionAddress && nftTokenId ? (
           <Row>
             <Col span={16}>
-              <Form {...formItemLayout} onSubmitCapture={handleSubmit} id="shard-form">
+              <Form {...formItemLayout} onFinish={onFinish}
+                  onFinishFailed={onFinishFailed} id="shard-form"
+                  initialValues={{["collectionAddress"]: nftCollectionAddress, ["tokenId"]: nftTokenId}}>
                 <h2 className="text-3xl font-bold">Details</h2>
                 <Form.Item
                   label="Collection Address"
@@ -77,16 +91,16 @@ const ShardDetails = () => {
                   rules={[{ required: true, message: "Please input!" }]}
                   hidden
                 >
-                  <Input value={nftCollectionAddress} />
+                  <Input />
                 </Form.Item>
 
                 <Form.Item
                   label="Token ID"
-                  name="Token ID"
+                  name="tokenId"
                   rules={[{ required: true, message: "Please input!" }]}
                   hidden
                 >
-                  <Input value={nftTokenId} />
+                  <Input />
                 </Form.Item>
 
                 <Form.Item
@@ -94,14 +108,14 @@ const ShardDetails = () => {
                   name="shardNumber"
                   rules={[{ required: true, message: "Please input!" }]}
                 >
-                  <Input className="w-full" value={shardsNumber} onChange={(e) => setShardsNumber(e.target.value)}/>
+                  <InputNumber className="w-full" value={shardsNumber} onChange={(e) => setShardsNumber(e.value)}/>
                 </Form.Item>
 
                 <Form.Item
                   label="Mininum Purchase Shards"
                   name="minShards"
                 >
-                  <Input className="w-full" value={minShards} onChange={(e) => setMinShards(e.target.value)}/>
+                  <InputNumber className="w-full" value={minShards} onChange={(e) => setMinShards(e.value)}/>
                 </Form.Item>
 
                 <Form.Item
@@ -109,7 +123,7 @@ const ShardDetails = () => {
                   name="price"
                   rules={[{ required: true, message: "Please input!" }]}
                 >
-                  <Input className="w-full" value={shardPrice} onChange={(e) => setShardPrice(e.target.value)}/>
+                  <InputNumber className="w-full" value={shardPrice} onChange={(e) => setShardPrice(e.value)}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 6, span: 16 }} hidden>
