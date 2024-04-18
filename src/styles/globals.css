@@ -17,13 +17,6 @@
     color: white !important;
   }
 
-  .ant-form-item-control-input-content .ant-input-status-success {
-    background-color: transparent !important;
-  }
-  .ant-form-item-control-input-content .ant-input-status-success {
-    color: white !important;
-  }
-
   .ant-descriptions .ant-descriptions-item-label{
     color: rgb(145, 145, 145) !important;
   }

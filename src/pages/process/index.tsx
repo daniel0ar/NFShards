@@ -45,7 +45,7 @@ const Process = () => {
               Back
             </Button>
           )}
-          {step !== 0 ? (
+          {step === 1 ? (
             <Button
               type="primary"
               className="mt-5 px-10 text-base font-medium rounded-md"

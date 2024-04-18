@@ -1,16 +1,14 @@
 import { ProcessContext } from "@/context/ProcessContext";
-import React, { useContext, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   Button,
   Card,
-  Col,
   Descriptions,
   DescriptionsProps,
   Form,
   FormProps,
   Input,
   InputNumber,
-  Row,
 } from "antd";
 import Image from "next/image";
 
@@ -49,7 +47,7 @@ const ShardDetails = () => {
     console.log('Failed:', errorInfo);
   };
 
-  const items: DescriptionsProps["items"] = useMemo(() => [
+  const items : DescriptionsProps["items"] = [
     {
       key:"1",
       label: "Number of Shards",
@@ -65,7 +63,7 @@ const ShardDetails = () => {
       label: "Mininum Purchase Shards",
       children: <p>{minShards}</p>,
     },
-  ], [shardsNumber, shardPrice, minShards]);
+  ]
 
   return (
     <>
@@ -80,12 +78,18 @@ const ShardDetails = () => {
       <div className="overflow-auto">
         {nftCollectionAddress && nftTokenId ? (
           <div className="grid grid-cols-5 gap-5 !text-white">
-            <div className="col-span-5 md:col-span-3">
+            <div className="col-span-5 lg:col-span-3">
               <Card bordered={false} className="ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8">
+                <h2 className="text-3xl font-bold mb-10">Details</h2>
                 <Form {...formItemLayout} onFinish={onFinish}
+                    labelCol={{ flex: '110px' }}
+                    labelAlign="left"
+                    labelWrap
+                    wrapperCol={{ flex: 1 }}
+                    colon={false}
+                    style={{ maxWidth: 600 }}
                     onFinishFailed={onFinishFailed} id="shard-form"
                     initialValues={{["collectionAddress"]: nftCollectionAddress, ["tokenId"]: nftTokenId}}>
-                  <h2 className="text-3xl font-bold mb-10">Details</h2>
                   <Form.Item
                     label="Collection Address"
                     name="collectionAddress"
@@ -109,14 +113,14 @@ const ShardDetails = () => {
                     name="shardNumber"
                     rules={[{ required: true, message: "Please input!" }]}
                   >
-                    <InputNumber className="w-full" value={shardsNumber} onChange={(e) => setShardsNumber(e.value)}/>
+                    <InputNumber className="w-full" value={shardsNumber} onChange={(e) => setShardsNumber(e)}/>
                   </Form.Item>
 
                   <Form.Item
                     label="Mininum Purchase Shards"
                     name="minShards"
                   >
-                    <InputNumber className="w-full" value={minShards} onChange={(e) => setMinShards(e.value)}/>
+                    <InputNumber className="w-full" value={minShards} onChange={(e) => setMinShards(e)}/>
                   </Form.Item>
 
                   <Form.Item
@@ -124,7 +128,7 @@ const ShardDetails = () => {
                     name="price"
                     rules={[{ required: true, message: "Please input!" }]}
                   >
-                    <InputNumber className="w-full" value={shardPrice} onChange={(e) => setShardPrice(e.value)}/>
+                    <InputNumber className="w-full" value={shardPrice} onChange={(e) => setShardPrice(e)}/>
                   </Form.Item>
 
                   <Form.Item wrapperCol={{ offset: 6, span: 16 }} hidden>
@@ -135,7 +139,7 @@ const ShardDetails = () => {
                 </Form>
               </Card>
             </div>
-            <div className="col-span-5 md:col-span-2">
+            <div className="col-span-5 lg:col-span-2">
               <Card bordered={false} className="ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8">
                 <div className="flex flex-col gap-5 mb-10">
                   <h2 className="text-3xl font-bold">Summary</h2>
