@@ -7,8 +7,8 @@ export default function Home() {
     <section>
       <div className="p-4">
         <div className="h-[65vh] mb-5 ring-1 dark:ring-white/10 ring-primary/5 bg-white bg-hero-pattern bg-blend-hard-light bg-cover dark:bg-secondary dark:bg-blend-darken shadow-xl dark:shadow-thick rounded-3xl p-12">
-          <h1 className="ext-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
-            Collection title
+          <h1 className="text-4xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
+            Collection Title
           </h1>
           <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
             This is a collection description
@@ -49,7 +49,7 @@ export default function Home() {
           </div>
           <div className="ring-1 dark:ring-white/10 ring-primary/5 rounded-3xl justify-between shadow-xl dark:shadow-thick items-center flex flex-col p-8 h-full bg-white  dark:bg-secondary">
             <div>
-              <p className="ext-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
+              <p className="text-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
                 Shard
               </p>
               <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -76,7 +76,7 @@ export default function Home() {
             className="ring-1 lg:row-span-2 flex flex-col justify-between group hover:ring-primary/10 dark:hover:ring-white/20 duration-300 h-full dark:ring-white/10 ring-primary/5 lg:row-start-2 md:grid-cols-2 md:grid lg:gap-0 md:items-center md:gap-12 lg:grid-cols-none lg:col-start-2 lg:col-span-2 rounded-3xl p-8 bg-white dark:bg-secondary shadow-xl dark:shadow-thick"
           >
             <div>
-              <p className="ext-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
+              <p className="text-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
                 Shard
               </p>
               <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -100,7 +100,7 @@ export default function Home() {
           </a>
           <div className="ring-1 dark:ring-white/10  ring-primary/5 flex flex-col justify-between items-center rounded-3xl shadow-xl dark:shadow-thick p-8  bg-white dark:bg-secondary overflow-hidden text-center lg:text-left">
             <div>
-              <p className="ext-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
+              <p className="text-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
                 Shard
               </p>
               <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -127,7 +127,7 @@ export default function Home() {
             className="ring-1 lg:row-start-3 items-center h-full flex p-8 flex-col justify-center hover:ring-primary/5 dark:hover:ring-white/20 dark:ring-white/10 ring-primary/5 relative rounded-3xl overflow-hidden bg-white dark:bg-secondary shadow-xl dark:shadow-thick"
           >
             <div>
-              <p className="ext-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
+              <p className="text-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
                 Shard
               </p>
               <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -154,7 +154,7 @@ export default function Home() {
             className="lg:row-span-2 ring-1 dark:ring-white/10 ring-primary/5 hover:ring-primary/5 bg-white dark:bg-secondary  dark:hover:ring-white/20 overflow-hidden duration-300 shadow-xl dark:shadow-thick rounded-3xl p-8"
           >
             <div>
-              <p className="ext-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
+              <p className="text-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
                 Shard
               </p>
               <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
