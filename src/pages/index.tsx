@@ -1,10 +1,12 @@
 import React from "react";
+import placeholderImage from "public/placeholder.png"
+import Image from "next/image";
 
 export default function Home() {
   return (
     <section>
       <div className="p-4">
-        <div className="h-[50vh] mb-5 ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8">
+        <div className="h-[50vh] mb-5 ring-1 dark:ring-white/10 ring-primary/5 bg-white bg-hero-pattern bg-blend-hard-light bg-cover dark:bg-secondary dark:bg-blend-darken shadow-xl dark:shadow-thick rounded-3xl p-8">
           <h1 className="ext-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
             Collection title
           </h1>
@@ -15,8 +17,8 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-4 list-none lg:grid-cols-3 lg:grid-rows-3 xl:grid-cols-4 xl:grid-rows-4">
           <div className="lg:row-span-2 ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8">
             <div className="relative flex items-center gap-x-4">
-              <img
-                src="/images/avatar.jpg"
+              <Image
+                src={placeholderImage}
                 alt=""
                 className="h-10 w-10 rounded-full ring-1 dark:ring-white/10 ring-primary/5"
               />

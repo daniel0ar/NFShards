@@ -12,6 +12,9 @@ module.exports = {
       gridTemplateRows: {
         "process": "10vh 60vh 10vh",
       },
+      backgroundImage: {
+        'hero-pattern': "url(/patacon-bg.png)"
+      }
     },
   },
   plugins: [],
