@@ -15,7 +15,7 @@ contract NFShards is ERC20, Ownable, ERC20Permit, ERC721Holder {
     uint256 public minAmount;
     uint256 public tokensLeft;
 
-    constructor() Ownable(msg.sender) ERC20("NFShards", "NFSHR") ERC20Permit("NFShards") {}
+    constructor(address creator, string name, string symbol) Ownable(creator) ERC20(name, symbol) ERC20Permit(name) {}
 
     function initialize(address _collection, uint256 _tokenId, uint256 _amount, uint256 _tokenPrice, uint256 _minTokens) external onlyOwner {
         require(!initialized, "Already initialized");
