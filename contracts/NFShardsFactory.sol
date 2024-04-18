@@ -7,8 +7,8 @@ contract NFShardsFactory {
     struct ShardContract {
         address contractAddress;
         address creator;
-        string memory name;
-        string memory symbol;
+        string name;
+        string symbol;
         address _collection;
         uint256 _tokenId;
         uint256 _amount;
@@ -18,7 +18,6 @@ contract NFShardsFactory {
     ShardContract[] public shardContracts;
 
     function deployNFShard(
-        address creator,
         string memory name,
         string memory symbol,
         address _collection,
@@ -27,7 +26,7 @@ contract NFShardsFactory {
         uint256 _tokenPrice,
         uint256 _minTokens
     ) external returns (address) {
-        NFShards nfShard = new NFShards(creator, name, symbol);
+        NFShards nfShard = new NFShards(msg.sender, name, symbol);
         nfShard.initialize(
             _collection,
             _tokenId,
@@ -38,6 +37,7 @@ contract NFShardsFactory {
         shardContracts.push(
             ShardContract(
                 address(nfShard),
+                msg.sender,
                 name,
                 symbol,
                 _collection,
