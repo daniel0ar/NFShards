@@ -1,4 +1,4 @@
-const NFSERC721ABI = [
+export const NFSERC721ABI = [
   {
     "inputs": [],
     "stateMutability": "nonpayable",

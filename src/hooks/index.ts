@@ -1,4 +1,7 @@
+import { config } from "@/config";
+import { Signer, ethers } from "ethers";
 import { useEffect, useState } from "react";
+import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 
 export const useOwnedNFTList = (userAddress: string) => {
   const [nfts, setNfts] = useState([]);
@@ -16,3 +19,8 @@ export const useOwnedNFTList = (userAddress: string) => {
 
   return nfts;
 };
+
+export const useOwnedNFShardNFTs = (userAddress: string, signer: Signer) => {
+  const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
+  return [nftContract.tokenOfOwnerByIndex(userAddress, 0)];
+}

@@ -1,4 +1,4 @@
-const NFShardsFactoryABI = [
+export const NFShardsFactoryABI = [
     {
       "inputs": [
         {
