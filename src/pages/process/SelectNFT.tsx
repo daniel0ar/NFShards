@@ -3,10 +3,20 @@ import { WalletContext } from "@/context/WalletContext";
 import { useOwnedNFTList } from "@/hooks";
 import { Button } from "antd";
 import React, { useContext } from "react";
+import { ethers } from "ethers";
+import { config } from "@/config";
+
 
 const SelectNFT = () => {
-  const { selectedAddress } = useContext(WalletContext);
-  const nfts = useOwnedNFTList("0x33aaDa02c476229251Ae0aa211ea1E1bF125Dd51");
+  const { selectedAddress, signer } = useContext(WalletContext);
+  const nfts = useOwnedNFTList(selectedAddress);
+
+  const nftContract = new ethers.Contract(config.NFTAddress, NFShardsFactoryABI, signer);
+
+  const mintToken = async() => {
+    nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
+  }
+
   return (
     <>
       <div>
@@ -24,7 +34,7 @@ const SelectNFT = () => {
             <div className="text-center col-span-full py-10">
               <div className="flex flex-col items-center gap-3">
                 <span className="text-slate-400">No NFTs found</span>
-                <Button type="primary">Mint One</Button>
+                <Button type="primary" onClick={mintToken}>Mint One</Button>
               </div>
             </div>
           )}

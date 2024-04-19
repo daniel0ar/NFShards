@@ -1,0 +1,16 @@
+{
+  "description": "A test token for the NFShards platform", 
+  "external_url": "https://nfshards.xyz", 
+  "image": "https://res.cloudinary.com/dhp6ybxwb/image/upload/v1713502753/bd37285f-67f8-4e1c-8aca-0c63ee4cc3ab.png", 
+  "name": "NFShards NFT",
+  "attributes": [
+    {
+      "trait_type": "Base", 
+      "value": "Purple"
+    }, 
+    {
+      "trait_type": "Body", 
+      "value": "Shards"
+    }
+  ]
+}
