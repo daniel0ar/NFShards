@@ -16,6 +16,7 @@ import Image from "next/image";
 import { config } from "@/config";
 import { ethers } from "ethers";
 import { WalletContext } from "@/context/WalletContext";
+import { NFShardsFactoryABI } from "@/abis/NFShardsFactoryABI";
 
 
 const formItemLayout = {

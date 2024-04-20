@@ -5,14 +5,14 @@ import { Button } from "antd";
 import React, { useContext } from "react";
 import { ethers } from "ethers";
 import { config } from "@/config";
-import { NFShardsFactoryABI } from "@/abis/NFShardsFactoryABI";
+import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 
 const SelectNFT = () => {
   const { selectedAddress, signer } = useContext(WalletContext);
   const nfts = useOwnedNFTList(selectedAddress);
   const nftsPlatform = useOwnedNFShardNFTs(selectedAddress, signer);
   const allNfts = [...nfts, ...nftsPlatform];
-  const nftContract = new ethers.Contract(config.NFTAddress, NFShardsFactoryABI, signer);
+  const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
 
   const mintToken = async() => {
     nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
