@@ -15,7 +15,12 @@ const SelectNFT = () => {
   const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
 
   const mintToken = async() => {
-    nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
+    try {
+      const res = await nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
+      await nftContract.approve( selectedAddress, res.value.toString());
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

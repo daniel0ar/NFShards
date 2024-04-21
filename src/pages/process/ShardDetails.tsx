@@ -46,14 +46,15 @@ const ShardDetails = () => {
   const [minShards, setMinShards] = useState(null);
   const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
 
-  const deployShardContract = async () => {
-    const deploy = await factoryContract.deployNFShard(nftName, nftSymbol, nftCollectionAddress, nftTokenId, shardsNumber, shardPrice, minShards);
+  const deployShardContract = async (values) => {
+    console.log({...values})
+    const deploy = await factoryContract.deployNFShard('Shard', "SHRD", nftCollectionAddress, 0, 10000, 1, 1);
     console.log(deploy);
   }
   
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
-    deployShardContract();
+    deployShardContract(values);
   };
   
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -94,7 +95,7 @@ const ShardDetails = () => {
             <Col span={16}>
               <Form {...formItemLayout} onFinish={onFinish}
                   onFinishFailed={onFinishFailed} id="shard-form"
-                  initialValues={{["collectionAddress"]: nftCollectionAddress, ["tokenId"]: nftTokenId}}>
+                  initialValues={{["collectionAddress"]: nftCollectionAddress, ["tokenId"]: nftTokenId.toString()}}>
                 <h2 className="text-3xl font-bold">Details</h2>
                 <Form.Item
                   label="Collection Address"
