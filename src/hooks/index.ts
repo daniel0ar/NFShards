@@ -30,17 +30,55 @@ export const useOwnedNFShardNFTs = (userAddress: string, signer: Signer) => {
   const nftContract = useMemo(()=> new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer), [signer]);
 
   useEffect(() => {
-    const fetch = async() => {
+    const fetchNFShardNFTS = async() => {
       const nTokens = await nftContract.balanceOf(userAddress); 
       if (nTokens > 0) {
-        const res = await nftContract.tokenOfOwnerByIndex(userAddress, 0);
-        console.log("Owned in NFShards is: ");
-        console.log(res);
-        setNfts([res]);
+        const fetchedNfts = [];
+        for (let i = 0; i < nTokens ; i++) {
+          try {
+            const tokenId = await nftContract.tokenOfOwnerByIndex(userAddress, i);
+            const tokenUri = await nftContract.tokenURI(tokenId);
+            /* TODO: fetch metadata from Pinata
+            const tokenUri = await nftContract.tokenURI(tokenId);
+            console.log("Token CID is: ");
+            console.log(tokenUri.substr(7));
+            const metadata = await fetch(
+              `https://green-adverse-anaconda-653.mypinata.cloud/${tokenUri.substr(
+                7
+              )}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${process.env.PINATA_JWT}`,
+                },
+              }
+            );
+            */
+            fetchedNfts.push({
+              token_address: config.NFTAddress,
+              token_id: tokenId.toString(),
+              token_uri: tokenUri,
+              contract_type: 'ERC721Enumerable',
+              owner_of: userAddress,
+              normalized_metadata: '',
+              description: '',
+              amount: '',
+              name: `NFSHard Test Token #${i}`,
+              symbol: 'NFST',
+              sync_token_uri: false,
+              id: i
+            });
+          }
+          catch (e) {
+            console.log("Error fetching NFT data: ", e)
+          }
+          
+        }
+        
+        setNfts(fetchedNfts);
       }
     }
 
-    fetch();
+    if (userAddress) fetchNFShardNFTS();
   }, [nftContract, userAddress])
   
   return nfts;

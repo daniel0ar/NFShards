@@ -34,7 +34,7 @@ const NFTCard = ({nft}: Props) => {
       className={`dark:bg-gray-800 ${selected ? 'border-4 border-blue-900' : ''}`}
       cover={<Image alt="example" width={200} height={200} src={nft.uri_media ?? PlaceholderImg} />}
     >
-      <Meta title={nft.name} description={nft.token_id} />
+      <Meta title={nft.name} description={nft.description} />
     </Card>
     </div>
   )
