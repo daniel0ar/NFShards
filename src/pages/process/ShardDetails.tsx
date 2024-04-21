@@ -11,6 +11,10 @@ import {
   InputNumber,
 } from "antd";
 import Image from "next/image";
+import { config } from "@/config";
+import { ethers } from "ethers";
+import { WalletContext } from "@/context/WalletContext";
+import { NFShardsFactoryABI } from "@/abis/NFShardsFactoryABI";
 
 
 const formItemLayout = {
@@ -33,14 +37,22 @@ type FieldType = {
 };
 
 const ShardDetails = () => {
-  const { nftCollectionAddress, nftTokenId } = useContext(ProcessContext);
+  const { signer } = useContext(WalletContext);
+  const { nftCollectionAddress, nftTokenId, nftName, nftSymbol } = useContext(ProcessContext);
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
+  const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
 
+  const deployShardContract = async (values) => {
+    console.log({...values})
+    const deploy = await factoryContract.deployNFShard('Shard', "SHRD", nftCollectionAddress, 0, 10000, 1, 1);
+    console.log(deploy);
+  }
   
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
+    deployShardContract(values);
   };
   
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -89,7 +101,7 @@ const ShardDetails = () => {
                     colon={false}
                     style={{ maxWidth: 600 }}
                     onFinishFailed={onFinishFailed} id="shard-form"
-                    initialValues={{["collectionAddress"]: nftCollectionAddress, ["tokenId"]: nftTokenId}}>
+                    initialValues={{["collectionAddress"]: nftCollectionAddress, ["tokenId"]: nftTokenId.toString()}}>
                   <Form.Item
                     label="Collection Address"
                     name="collectionAddress"

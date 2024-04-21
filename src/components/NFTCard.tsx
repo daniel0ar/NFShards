@@ -12,19 +12,17 @@ type Props = {
 }
 
 const NFTCard = ({nft}: Props) => {
-  const { setNftCollectionAddress, setNftTokenId } = useContext(ProcessContext);
+  const { reset, setDetails } = useContext(ProcessContext);
   const [ selected, setSelected ] = useState(false);
 
   const handleSelect = () => {
     if (selected) {
       setSelected(false);
-      setNftCollectionAddress(null);
-      setNftTokenId(null);
+      reset();
     } 
     else {
       setSelected(true);
-      setNftCollectionAddress(nft.token_address);
-      setNftTokenId(nft.token_id);
+      setDetails(nft.token_address, nft.token_id, nft.name, nft.symbol);
     }
   }
 
@@ -36,7 +34,7 @@ const NFTCard = ({nft}: Props) => {
       className={`dark:bg-secondary ${selected ? 'border-4 border-white-900' : ''}`}
       cover={<Image alt="example" width={200} height={200} src={nft.uri_media ?? PlaceholderImg} />}
     >
-      <Meta title={nft.name} description={nft.token_id} />
+      <Meta title={nft.name} description={nft.description} />
     </Card>
     </div>
   )

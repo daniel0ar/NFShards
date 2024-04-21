@@ -13,8 +13,16 @@ async function main() {
 
   await factoryContract.deployed();
 
+  const NftContract = await hre.ethers.getContractFactory("NFSERC721");
+  const nftContract = await NftContract.deploy();
+
+  await nftContract.deployed();
+
   console.log(
     `NFShardsFactory deployed to ${factoryContract.address}`
+  );
+  console.log(
+    `NFSERC721 deployed to ${nftContract.address}`
   );
 }
 

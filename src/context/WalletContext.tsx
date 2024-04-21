@@ -20,7 +20,7 @@ interface WalletContextType {
 
 export const WalletContext = createContext<WalletContextType | null>(null);
 
-const desiredNetwork = 8082;
+const desiredNetwork = 31337;
 
 export const WalletProvider = ({ children }) => {
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);

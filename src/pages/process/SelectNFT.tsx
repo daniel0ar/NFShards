@@ -1,12 +1,28 @@
 import NFTCard from "@/components/NFTCard";
 import { WalletContext } from "@/context/WalletContext";
-import { useOwnedNFTList } from "@/hooks";
+import { useOwnedNFShardNFTs, useOwnedNFTList } from "@/hooks";
 import { Button } from "antd";
 import React, { useContext } from "react";
+import { ethers } from "ethers";
+import { config } from "@/config";
+import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 
 const SelectNFT = () => {
-  const { selectedAddress } = useContext(WalletContext);
-  const nfts = useOwnedNFTList("0x33aaDa02c476229251Ae0aa211ea1E1bF125Dd51");
+  const { selectedAddress, signer } = useContext(WalletContext);
+  const nfts = useOwnedNFTList(selectedAddress);
+  const nftsPlatform = useOwnedNFShardNFTs(selectedAddress, signer);
+  const allNfts = [...nfts, ...nftsPlatform];
+  const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
+
+  const mintToken = async() => {
+    try {
+      const res = await nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
+      await nftContract.approve( selectedAddress, res.value.toString());
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <div>
@@ -18,13 +34,13 @@ const SelectNFT = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
-          {nfts.length > 0 ? (
-            nfts.map((nft, index) => <NFTCard key={index} nft={nft}></NFTCard>)
+          {allNfts.length > 0 ? (
+            allNfts.map((nft, index) => <NFTCard key={index} nft={nft}></NFTCard>)
           ) : (
             <div className="text-center col-span-full py-10">
               <div className="flex flex-col items-center gap-3">
                 <span className="text-slate-400">No NFTs found</span>
-                <Button type="primary">Mint One</Button>
+                <Button type="primary" onClick={mintToken}>Mint One</Button>
               </div>
             </div>
           )}
