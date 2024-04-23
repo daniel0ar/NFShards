@@ -2,13 +2,14 @@ import NFTCard from "@/components/NFTCard";
 import { WalletContext } from "@/context/WalletContext";
 import { useOwnedNFShardNFTs, useOwnedNFTList } from "@/hooks";
 import { Button } from "antd";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ethers } from "ethers";
 import { config } from "@/config";
 import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 
 const SelectNFT = () => {
   const { selectedAddress, signer } = useContext(WalletContext);
+  const [refresh, setRefresh] = useState(0);
   const nfts = useOwnedNFTList(selectedAddress);
   const nftsPlatform = useOwnedNFShardNFTs(selectedAddress, signer);
   const allNfts = [...nfts, ...nftsPlatform];
@@ -17,7 +18,9 @@ const SelectNFT = () => {
   const mintToken = async() => {
     try {
       const res = await nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
-      //await nftContract.approve( selectedAddress, res.value.toString());
+      setTimeout(() => {
+        setRefresh(1);
+      }, 14000);
     } catch (error) {
       console.log(error);
     }

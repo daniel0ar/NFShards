@@ -17,6 +17,8 @@ import { WalletContext } from "@/context/WalletContext";
 import { NFShardsFactoryABI } from "@/abis/NFShardsFactoryABI";
 import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 import { NFShardsABI } from "@/abis/NFShardsABI";
+import PlaceholderImg from "public/placeholder.png";
+
 
 
 const formItemLayout = {
@@ -47,6 +49,7 @@ const ShardDetails = () => {
   const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
   const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer)
 
+
   const deployShardContract = async (values) => {
     console.log({...values});
     //const approveOneRes = await nftContract.approve(selectedAddress, nftTokenId);
@@ -55,23 +58,17 @@ const ShardDetails = () => {
     setTimeout(async() => {
       const shardContracts = await factoryContract.getNFShardsContracts();
       console.log("All shard contract address: ", shardContracts);
+      const apRes = nftContract.setApprovalForAll(shardContracts[shardContracts.length - 1].contractAddress, true);
+      console.log("Approved?", apRes);
     }, 12000);
+    setTimeout(async() => {
+      const shardContracts = await factoryContract.getNFShardsContracts();
+      const shardContract = new ethers.Contract(shardContracts[shardContracts.length -1].contractAddress, NFShardsABI, signer);
+      const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
+      console.log("Initialized?", initRes);
+    }, 24000);
     console.log(deploy);
   };
-
-  const handleApprove = async() => {
-    const shardContracts = await factoryContract.getNFShardsContracts();
-    console.log("All shard contract address: ", shardContracts);
-    const apRes = nftContract.setApprovalForAll(shardContracts[0].contractAddress, true);
-    console.log("Approved?", apRes);
-  }
-
-  const handleInitialize = async () => {
-    const shardContracts = await factoryContract.getNFShardsContracts();
-    const shardContract = new ethers.Contract(shardContracts[0].contractAddress, NFShardsABI, signer);
-    const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
-    console.log("Initialized?", initRes);
-  }
   
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
@@ -172,8 +169,6 @@ const ShardDetails = () => {
                     </Button>
                   </Form.Item>
                 </Form>
-                <button onClick={() => handleApprove()}>Approve</button>
-                <button onClick={() => handleInitialize()}>Initialize</button>
               </Card>
             </div>
             <div className="col-span-5 lg:col-span-2">
@@ -184,7 +179,7 @@ const ShardDetails = () => {
                   <div className="flex flex-row gap-5 items-center">
                     <div className="flex flex-col">
                       <p className="font-bold text-secondary dark:text-tertiary">Selected NFT</p>
-                      <Image alt="NFT" src="/images/nft.png" width={100} height={100} className="border rounded-lg"/>
+                      <Image alt="NFT" src={PlaceholderImg} width={100} height={100} className="border rounded-lg"/>
                     </div>
                     <div className="flex flex-col gap-3 break-all">
                       <p>Collection Address: {nftCollectionAddress}</p>
