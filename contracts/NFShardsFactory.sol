@@ -29,15 +29,7 @@ contract NFShardsFactory {
         uint256 _minTokens
     ) external returns (address) {
         NFShards nfShard = new NFShards(msg.sender, name, symbol);
-        IERC721 collection = IERC721(_collection);
-        collection.approve(address(nfShard), _tokenId);
-        nfShard.initialize(
-            _collection,
-            _tokenId,
-            _amount,
-            _tokenPrice,
-            _minTokens
-        );
+
         shardContracts.push(
             ShardContract(
                 address(nfShard),

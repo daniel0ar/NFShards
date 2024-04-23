@@ -16,6 +16,7 @@ import { ethers } from "ethers";
 import { WalletContext } from "@/context/WalletContext";
 import { NFShardsFactoryABI } from "@/abis/NFShardsFactoryABI";
 import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
+import { NFShardsABI } from "@/abis/NFShardsABI";
 
 
 const formItemLayout = {
@@ -50,10 +51,26 @@ const ShardDetails = () => {
     console.log({...values});
     //const approveOneRes = await nftContract.approve(selectedAddress, nftTokenId);
     //console.log("Approve is: ", approveOneRes);
-    const aproveAllRes = await nftContract.setApprovalForAll(config.FactoryAddress, true);
-    console.log("Approve all is: ", aproveAllRes);
-    const deploy = await factoryContract.deployNFShard('Shard', "SHRD", nftCollectionAddress, 0, 10000, 1, 1);
+    const deploy = await factoryContract.deployNFShard("Non Fungible Shard", "SHRD", nftCollectionAddress, 0, 10000, 1, 1);
+    setTimeout(async() => {
+      const shardContracts = await factoryContract.getNFShardsContracts();
+      console.log("All shard contract address: ", shardContracts);
+    }, 12000);
     console.log(deploy);
+  };
+
+  const handleApprove = async() => {
+    const shardContracts = await factoryContract.getNFShardsContracts();
+    console.log("All shard contract address: ", shardContracts);
+    const apRes = nftContract.setApprovalForAll(shardContracts[0].contractAddress, true);
+    console.log("Approved?", apRes);
+  }
+
+  const handleInitialize = async () => {
+    const shardContracts = await factoryContract.getNFShardsContracts();
+    const shardContract = new ethers.Contract(shardContracts[0].contractAddress, NFShardsABI, signer);
+    const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
+    console.log("Initialized?", initRes);
   }
   
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
@@ -155,6 +172,8 @@ const ShardDetails = () => {
                     </Button>
                   </Form.Item>
                 </Form>
+                <button onClick={() => handleApprove()}>Approve</button>
+                <button onClick={() => handleInitialize()}>Initialize</button>
               </Card>
             </div>
             <div className="col-span-5 lg:col-span-2">
