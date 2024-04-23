@@ -2,6 +2,8 @@
 pragma solidity ^0.8.20;
 
 import "./NFShards.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+
 
 contract NFShardsFactory {
     struct ShardContract {
@@ -27,6 +29,8 @@ contract NFShardsFactory {
         uint256 _minTokens
     ) external returns (address) {
         NFShards nfShard = new NFShards(msg.sender, name, symbol);
+        IERC721 collection = IERC721(_collection);
+        collection.approve(address(nfShard), _tokenId);
         nfShard.initialize(
             _collection,
             _tokenId,

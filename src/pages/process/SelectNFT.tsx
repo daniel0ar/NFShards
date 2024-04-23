@@ -17,7 +17,7 @@ const SelectNFT = () => {
   const mintToken = async() => {
     try {
       const res = await nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
-      await nftContract.approve( selectedAddress, res.value.toString());
+      //await nftContract.approve( selectedAddress, res.value.toString());
     } catch (error) {
       console.log(error);
     }

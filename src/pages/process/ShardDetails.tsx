@@ -15,6 +15,7 @@ import { config } from "@/config";
 import { ethers } from "ethers";
 import { WalletContext } from "@/context/WalletContext";
 import { NFShardsFactoryABI } from "@/abis/NFShardsFactoryABI";
+import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 
 
 const formItemLayout = {
@@ -37,15 +38,20 @@ type FieldType = {
 };
 
 const ShardDetails = () => {
-  const { signer } = useContext(WalletContext);
+  const { selectedAddress, signer } = useContext(WalletContext);
   const { nftCollectionAddress, nftTokenId, nftName, nftSymbol } = useContext(ProcessContext);
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
   const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
+  const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer)
 
   const deployShardContract = async (values) => {
-    console.log({...values})
+    console.log({...values});
+    //const approveOneRes = await nftContract.approve(selectedAddress, nftTokenId);
+    //console.log("Approve is: ", approveOneRes);
+    const aproveAllRes = await nftContract.setApprovalForAll(config.FactoryAddress, true);
+    console.log("Approve all is: ", aproveAllRes);
     const deploy = await factoryContract.deployNFShard('Shard', "SHRD", nftCollectionAddress, 0, 10000, 1, 1);
     console.log(deploy);
   }
