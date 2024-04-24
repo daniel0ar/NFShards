@@ -18,7 +18,7 @@ import { NFShardsFactoryABI } from "@/abis/NFShardsFactoryABI";
 import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 import { NFShardsABI } from "@/abis/NFShardsABI";
 import PlaceholderImg from "public/placeholder.png";
-
+import { useWaitTx } from "@/hooks";
 
 
 const formItemLayout = {
@@ -41,33 +41,27 @@ type FieldType = {
 };
 
 const ShardDetails = () => {
-  const { selectedAddress, signer } = useContext(WalletContext);
+  const { signer } = useContext(WalletContext);
   const { nftCollectionAddress, nftTokenId, nftName, nftSymbol } = useContext(ProcessContext);
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
   const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
-  const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer)
+  const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
+  const {receipt: shardReceipt, setReceipt: setShardReceipt, setTxhash: setShardTxhash} = useWaitTx();
 
 
   const deployShardContract = async (values) => {
     console.log({...values});
-    //const approveOneRes = await nftContract.approve(selectedAddress, nftTokenId);
-    //console.log("Approve is: ", approveOneRes);
-    const deploy = await factoryContract.deployNFShard("Non Fungible Shard", "SHRD", nftCollectionAddress, 0, 10000, 1, 1);
-    setTimeout(async() => {
-      const shardContracts = await factoryContract.getNFShardsContracts();
-      console.log("All shard contract address: ", shardContracts);
-      const apRes = nftContract.setApprovalForAll(shardContracts[shardContracts.length - 1].contractAddress, true);
-      console.log("Approved?", apRes);
-    }, 12000);
+    const deployTx = await factoryContract.deployNFShard(nftName, nftSymbol, nftCollectionAddress, 0, 10000, 1, 1);
+    setShardTxhash(deployTx.hash);
+    const apRes = nftContract.setApprovalForAll(shardReceipt.contractAddress, true);
     setTimeout(async() => {
       const shardContracts = await factoryContract.getNFShardsContracts();
       const shardContract = new ethers.Contract(shardContracts[shardContracts.length -1].contractAddress, NFShardsABI, signer);
       const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
       console.log("Initialized?", initRes);
     }, 24000);
-    console.log(deploy);
   };
   
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
