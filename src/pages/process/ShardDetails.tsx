@@ -47,21 +47,14 @@ const ShardDetails = () => {
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
   const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
-  const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
-  const {receipt: shardReceipt, setReceipt: setShardReceipt, setTxhash: setShardTxhash} = useWaitTx();
+  const nftContract = useMemo(() => new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer), [signer]);
+  const {receipt: shardReceipt, setTxhash: setShardTxhash} = useWaitTx();
 
 
-  const deployShardContract = async (values) => {
+  const deployShardContract = async (values: any) => {
     console.log({...values});
     const deployTx = await factoryContract.deployNFShard(nftName, nftSymbol, nftCollectionAddress, 0, 10000, 1, 1);
     setShardTxhash(deployTx.hash);
-    const apRes = nftContract.setApprovalForAll(shardReceipt.contractAddress, true);
-    setTimeout(async() => {
-      const shardContracts = await factoryContract.getNFShardsContracts();
-      const shardContract = new ethers.Contract(shardContracts[shardContracts.length -1].contractAddress, NFShardsABI, signer);
-      const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
-      console.log("Initialized?", initRes);
-    }, 24000);
   };
   
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
@@ -89,7 +82,18 @@ const ShardDetails = () => {
       label: "Mininum Purchase Shards",
       children: <p>{minShards}</p>,
     },
-  ]
+  ];
+
+  useEffect(() => {
+    if(shardReceipt){
+      console.log("shardReceipt.contractAddress");
+      // const apRes = nftContract.setApprovalForAll(shardReceipt.contractAddress, true);
+      // const shardContracts = await factoryContract.getNFShardsContracts();
+      // const shardContract = new ethers.Contract(shardContracts[shardContracts.length -1].contractAddress, NFShardsABI, signer);
+      // const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
+      // console.log("Initialized?", initRes);
+    }
+  }, [nftContract, shardReceipt]);
 
   return (
     <>
