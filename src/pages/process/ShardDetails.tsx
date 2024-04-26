@@ -85,15 +85,19 @@ const ShardDetails = () => {
   ];
 
   useEffect(() => {
+    const fetchShards = async() => {
+      const shardContracts = await factoryContract.getNFShardsContracts();
+      console.log(shardContracts);
+    }
     if(shardReceipt){
-      console.log("shardReceipt.contractAddress");
+      console.log(shardReceipt);
+      fetchShards();
       // const apRes = nftContract.setApprovalForAll(shardReceipt.contractAddress, true);
-      // const shardContracts = await factoryContract.getNFShardsContracts();
       // const shardContract = new ethers.Contract(shardContracts[shardContracts.length -1].contractAddress, NFShardsABI, signer);
       // const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
       // console.log("Initialized?", initRes);
     }
-  }, [nftContract, shardReceipt]);
+  }, [factoryContract, nftContract, shardReceipt]);
 
   return (
     <>
