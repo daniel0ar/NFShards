@@ -5,7 +5,12 @@ import { useState, useMemo, useEffect } from "react";
 
 export const useOwnedNFShardNFTs = (userAddress: string, signer: Signer) => {
   const [nfts, setNfts] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const nftContract = useMemo(()=> new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer), [signer]);
+
+  const refreshList = () => {
+    setRefresh(true);
+  }
 
   useEffect(() => {
     const fetchNFShardNFTS = async() => {
@@ -56,8 +61,11 @@ export const useOwnedNFShardNFTs = (userAddress: string, signer: Signer) => {
       }
     }
 
-    if (userAddress) fetchNFShardNFTS();
-  }, [nftContract, userAddress])
+    if (userAddress && refresh) {
+      fetchNFShardNFTS();
+      setRefresh(false);
+    }
+  }, [nftContract, userAddress, refresh])
   
-  return nfts;
+  return { nfts, refreshList };
 }

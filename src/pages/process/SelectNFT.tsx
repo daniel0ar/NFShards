@@ -12,7 +12,7 @@ const SelectNFT = () => {
   const [receipt, setReceipt] = useState<ethers.providers.TransactionReceipt>();
   const [txhash, setTxhash] = useState();
   const nfts = useOwnedNFTList(selectedAddress);
-  const nftsPlatform = useOwnedNFShardNFTs(selectedAddress, signer);
+  const { nfts: nftsPlatform, refreshList } = useOwnedNFShardNFTs(selectedAddress, signer);
   const allNfts = [...nfts, ...nftsPlatform];
   const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
 
@@ -33,21 +33,17 @@ const SelectNFT = () => {
     const interval = setInterval(async () => {
       const rx = await provider.getTransactionReceipt(txhash);
       if (rx) {
+        refreshList();
         setReceipt(rx);
         clearInterval(interval); 
       }
     }, 1000);
   
     return () => clearInterval(interval);
-  }, [txhash]);
+  }, [refreshList, txhash]);
   
   return (
     <>
-      {receipt && 
-        <div>
-          Transaction confirmed! Block number: {receipt.blockNumber}
-        </div>
-      }
       <div>
         <div className="mt-10">
           <h1 className="text-2xl md:text-5xl leading-normal font-bold">
