@@ -20,7 +20,6 @@ import { NFShardsABI } from "@/abis/NFShardsABI";
 import PlaceholderImg from "public/placeholder.png";
 import { useWaitTx } from "@/hooks";
 
-
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -42,40 +41,59 @@ type FieldType = {
 
 const ShardDetails = () => {
   const { signer } = useContext(WalletContext);
-  const { nftCollectionAddress, nftTokenId, nftName, nftSymbol } = useContext(ProcessContext);
+  const { nftCollectionAddress, nftTokenId, nftName, nftSymbol } =
+    useContext(ProcessContext);
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
-  const factoryContract = new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer);
-  const nftContract = useMemo(() => new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer), [signer]);
-  const {receipt: shardReceipt, setTxhash: setShardTxhash} = useWaitTx();
-
+  const factoryContract = useMemo(
+    () =>
+      new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer),
+    [signer]
+  );
+  const nftContract = useMemo(
+    () => new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer),
+    [signer]
+  );
+  const { receipt: shardReceipt, setTxhash: setShardTxhash } = useWaitTx();
+  const { receipt: approveReceipt, setTxhash: setApproveTxhash } = useWaitTx();
+  const { receipt: initReceipt, setTxhash: setInitTxhash } = useWaitTx();
 
   const deployShardContract = async (values: any) => {
-    console.log({...values});
-    const deployTx = await factoryContract.deployNFShard(nftName, nftSymbol, nftCollectionAddress, 0, 10000, 1, 1);
+    console.log({ ...values });
+    const deployTx = await factoryContract.deployNFShard(
+      nftName,
+      nftSymbol,
+      nftCollectionAddress,
+      0,
+      shardsNumber,
+      shardPrice,
+      minShards
+    );
     setShardTxhash(deployTx.hash);
   };
-  
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
+
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    console.log("Success:", values);
     deployShardContract(values);
   };
-  
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo
+  ) => {
+    console.log("Failed:", errorInfo);
   };
 
-  const items : DescriptionsProps["items"] = [
+  const items: DescriptionsProps["items"] = [
     {
-      key:"1",
+      key: "1",
       label: "Number of Shards",
-      children: <p>{shardsNumber}</p>
+      children: <p>{shardsNumber}</p>,
     },
     {
       key: "2",
       label: "Shard Price",
-      children: <p>{shardPrice}</p>
+      children: <p>{shardPrice}</p>,
     },
     {
       key: "3",
@@ -85,19 +103,56 @@ const ShardDetails = () => {
   ];
 
   useEffect(() => {
-    const fetchShards = async() => {
-      const shardContracts = await factoryContract.getNFShardsContracts();
-      console.log(shardContracts);
+    const approveTransfer = async () => {
+      const approveTx = await nftContract.setApprovalForAll(
+        shardReceipt.logs[0]?.address,
+        true
+      );
+      setApproveTxhash(approveTx.hash);
+    };
+
+    if (shardReceipt) {
+      approveTransfer();
     }
-    if(shardReceipt){
-      console.log(shardReceipt);
-      fetchShards();
-      // const apRes = nftContract.setApprovalForAll(shardReceipt.contractAddress, true);
-      // const shardContract = new ethers.Contract(shardContracts[shardContracts.length -1].contractAddress, NFShardsABI, signer);
-      // const initRes = shardContract.initialize( nftCollectionAddress, nftTokenId, 10000, 1, 1);
-      // console.log("Initialized?", initRes);
+  }, [factoryContract, nftContract, setApproveTxhash, shardReceipt]);
+
+  useEffect(() => {
+    const initFractions = async (contractAddress: string) => {
+      const shardContract = new ethers.Contract(
+        contractAddress,
+        NFShardsABI,
+        signer
+      );
+      const initTx = await shardContract.initialize(
+        nftCollectionAddress,
+        nftTokenId,
+        shardsNumber,
+        shardPrice,
+        minShards
+      );
+      setInitTxhash(initTx.hash);
+    };
+
+    if (shardReceipt && approveReceipt) {
+      initFractions(shardReceipt.logs[0]?.address);
     }
-  }, [factoryContract, nftContract, shardReceipt]);
+  }, [
+    approveReceipt,
+    minShards,
+    nftCollectionAddress,
+    nftTokenId,
+    setInitTxhash,
+    shardPrice,
+    shardReceipt,
+    shardsNumber,
+    signer,
+  ]);
+
+  useEffect(() => {
+    if (initReceipt) {
+      alert("TRANSACTIONS FINISHED!");
+    }
+  }, [initReceipt]);
 
   return (
     <>
@@ -113,17 +168,27 @@ const ShardDetails = () => {
         {nftCollectionAddress && nftTokenId ? (
           <div className="grid grid-cols-5 gap-5 !text-white">
             <div className="col-span-5 lg:col-span-3">
-              <Card bordered={false} className="ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8">
+              <Card
+                bordered={false}
+                className="ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8"
+              >
                 <h2 className="text-3xl font-bold mb-10">Details</h2>
-                <Form {...formItemLayout} onFinish={onFinish}
-                    labelCol={{ flex: '110px' }}
-                    labelAlign="left"
-                    labelWrap
-                    wrapperCol={{ flex: 1 }}
-                    colon={false}
-                    style={{ maxWidth: 600 }}
-                    onFinishFailed={onFinishFailed} id="shard-form"
-                    initialValues={{["collectionAddress"]: nftCollectionAddress, ["tokenId"]: nftTokenId.toString()}}>
+                <Form
+                  {...formItemLayout}
+                  onFinish={onFinish}
+                  labelCol={{ flex: "110px" }}
+                  labelAlign="left"
+                  labelWrap
+                  wrapperCol={{ flex: 1 }}
+                  colon={false}
+                  style={{ maxWidth: 600 }}
+                  onFinishFailed={onFinishFailed}
+                  id="shard-form"
+                  initialValues={{
+                    ["collectionAddress"]: nftCollectionAddress,
+                    ["tokenId"]: nftTokenId.toString(),
+                  }}
+                >
                   <Form.Item
                     label="Collection Address"
                     name="collectionAddress"
@@ -147,14 +212,19 @@ const ShardDetails = () => {
                     name="shardNumber"
                     rules={[{ required: true, message: "Please input!" }]}
                   >
-                    <InputNumber className="w-full" value={shardsNumber} onChange={(e) => setShardsNumber(e)}/>
+                    <InputNumber
+                      className="w-full"
+                      value={shardsNumber}
+                      onChange={(e) => setShardsNumber(e)}
+                    />
                   </Form.Item>
 
-                  <Form.Item
-                    label="Mininum Purchase Shards"
-                    name="minShards"
-                  >
-                    <InputNumber className="w-full" value={minShards} onChange={(e) => setMinShards(e)}/>
+                  <Form.Item label="Mininum Purchase Shards" name="minShards">
+                    <InputNumber
+                      className="w-full"
+                      value={minShards}
+                      onChange={(e) => setMinShards(e)}
+                    />
                   </Form.Item>
 
                   <Form.Item
@@ -162,7 +232,11 @@ const ShardDetails = () => {
                     name="price"
                     rules={[{ required: true, message: "Please input!" }]}
                   >
-                    <InputNumber className="w-full" value={shardPrice} onChange={(e) => setShardPrice(e)}/>
+                    <InputNumber
+                      className="w-full"
+                      value={shardPrice}
+                      onChange={(e) => setShardPrice(e)}
+                    />
                   </Form.Item>
 
                   <Form.Item wrapperCol={{ offset: 6, span: 16 }} hidden>
@@ -174,14 +248,28 @@ const ShardDetails = () => {
               </Card>
             </div>
             <div className="col-span-5 lg:col-span-2">
-              <Card bordered={false} className="ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8">
+              <Card
+                bordered={false}
+                className="ring-1 dark:ring-white/10 ring-primary/5 bg-white dark:bg-secondary shadow-xl dark:shadow-thick rounded-3xl p-8"
+              >
                 <div className="flex flex-col gap-5 mb-10">
                   <h2 className="text-3xl font-bold">Summary</h2>
-                  <p className="text-muted">Review this final summary before you shard your NFT. Once you shard it, <strong>you cannot make changes.</strong></p>
+                  <p className="text-muted">
+                    Review this final summary before you shard your NFT. Once
+                    you shard it, <strong>you cannot make changes.</strong>
+                  </p>
                   <div className="flex flex-row gap-5 items-center">
                     <div className="flex flex-col">
-                      <p className="font-bold text-secondary dark:text-tertiary">Selected NFT</p>
-                      <Image alt="NFT" src={PlaceholderImg} width={100} height={100} className="border rounded-lg"/>
+                      <p className="font-bold text-secondary dark:text-tertiary">
+                        Selected NFT
+                      </p>
+                      <Image
+                        alt="NFT"
+                        src={PlaceholderImg}
+                        width={100}
+                        height={100}
+                        className="border rounded-lg"
+                      />
                     </div>
                     <div className="flex flex-col gap-3 break-all">
                       <p>Collection Address: {nftCollectionAddress}</p>
@@ -189,7 +277,7 @@ const ShardDetails = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <Descriptions
                   items={items}
                   column={1}
