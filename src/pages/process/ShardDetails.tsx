@@ -26,6 +26,7 @@ import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 import { NFShardsABI } from "@/abis/NFShardsABI";
 import PlaceholderImg from "public/placeholder.png";
 import { useWaitTx } from "@/hooks";
+import { useRouter } from "next/navigation";
 
 const formItemLayout = {
   labelCol: {
@@ -47,6 +48,7 @@ type FieldType = {
 };
 
 const ShardDetails = () => {
+  const router = useRouter();
   const { signer } = useContext(WalletContext);
   const { nftCollectionAddress, nftTokenId, nftName, nftSymbol } =
     useContext(ProcessContext);
@@ -161,9 +163,9 @@ const ShardDetails = () => {
 
   useEffect(() => {
     if (initReceipt) {
-      alert("TRANSACTIONS FINISHED!");
+      router.push("/feedback");
     }
-  }, [initReceipt]);
+  }, [initReceipt, router]);
 
   return (
     <>
