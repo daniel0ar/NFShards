@@ -1,5 +1,12 @@
 import { ProcessContext } from "@/context/ProcessContext";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Button,
   Card,
@@ -46,6 +53,9 @@ const ShardDetails = () => {
   const [shardsNumber, setShardsNumber] = useState(null);
   const [shardPrice, setShardPrice] = useState(null);
   const [minShards, setMinShards] = useState(null);
+  const { receipt: shardReceipt, setTxhash: setShardTxhash } = useWaitTx();
+  const { receipt: approveReceipt, setTxhash: setApproveTxhash } = useWaitTx();
+  const { receipt: initReceipt, setTxhash: setInitTxhash } = useWaitTx();
   const factoryContract = useMemo(
     () =>
       new ethers.Contract(config.FactoryAddress, NFShardsFactoryABI, signer),
@@ -55,9 +65,14 @@ const ShardDetails = () => {
     () => new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer),
     [signer]
   );
-  const { receipt: shardReceipt, setTxhash: setShardTxhash } = useWaitTx();
-  const { receipt: approveReceipt, setTxhash: setApproveTxhash } = useWaitTx();
-  const { receipt: initReceipt, setTxhash: setInitTxhash } = useWaitTx();
+  const shardContract = useMemo(
+    () => {
+      if (shardReceipt) {
+        return new ethers.Contract(shardReceipt.logs[0]?.address, NFShardsABI, signer) 
+      }
+    },
+    [shardReceipt, signer]
+  );
 
   const deployShardContract = async (values: any) => {
     console.log({ ...values });
@@ -102,6 +117,23 @@ const ShardDetails = () => {
     },
   ];
 
+  const initializeShardContract = useCallback(async () => {
+    return shardContract.initialize(
+      nftCollectionAddress,
+      nftTokenId,
+      shardsNumber,
+      shardPrice,
+      minShards
+    );
+  }, [
+    minShards,
+    nftCollectionAddress,
+    nftTokenId,
+    shardContract,
+    shardPrice,
+    shardsNumber,
+  ]);
+
   useEffect(() => {
     const approveTransfer = async () => {
       const approveTx = await nftContract.setApprovalForAll(
@@ -117,36 +149,15 @@ const ShardDetails = () => {
   }, [factoryContract, nftContract, setApproveTxhash, shardReceipt]);
 
   useEffect(() => {
-    const initFractions = async (contractAddress: string) => {
-      const shardContract = new ethers.Contract(
-        contractAddress,
-        NFShardsABI,
-        signer
-      );
-      const initTx = await shardContract.initialize(
-        nftCollectionAddress,
-        nftTokenId,
-        shardsNumber,
-        shardPrice,
-        minShards
-      );
+    const initFractions = async () => {
+      const initTx = await initializeShardContract();
       setInitTxhash(initTx.hash);
     };
 
     if (shardReceipt && approveReceipt) {
-      initFractions(shardReceipt.logs[0]?.address);
+      initFractions();
     }
-  }, [
-    approveReceipt,
-    minShards,
-    nftCollectionAddress,
-    nftTokenId,
-    setInitTxhash,
-    shardPrice,
-    shardReceipt,
-    shardsNumber,
-    signer,
-  ]);
+  }, [approveReceipt, initializeShardContract, setInitTxhash, shardReceipt]);
 
   useEffect(() => {
     if (initReceipt) {
