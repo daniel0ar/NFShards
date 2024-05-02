@@ -2,30 +2,46 @@ import NFTCard from "@/components/NFTCard";
 import { WalletContext } from "@/context/WalletContext";
 import { useOwnedNFShardNFTs, useOwnedNFTList } from "@/hooks";
 import { Button } from "antd";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { config } from "@/config";
 import { NFSERC721ABI } from "@/abis/NFSERC721ABI";
 
 const SelectNFT = () => {
   const { selectedAddress, signer } = useContext(WalletContext);
-  const [refresh, setRefresh] = useState(0);
+  const [receipt, setReceipt] = useState<ethers.providers.TransactionReceipt>();
+  const [txhash, setTxhash] = useState();
   const nfts = useOwnedNFTList(selectedAddress);
-  const nftsPlatform = useOwnedNFShardNFTs(selectedAddress, signer);
+  const { nfts: nftsPlatform, refreshList } = useOwnedNFShardNFTs(selectedAddress, signer);
   const allNfts = [...nfts, ...nftsPlatform];
   const nftContract = new ethers.Contract(config.NFTAddress, NFSERC721ABI, signer);
 
-  const mintToken = async() => {
+  const mintToken = async () => {
     try {
-      const res = await nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
-      setTimeout(() => {
-        setRefresh(1);
-      }, 14000);
+      const tx = await nftContract.safeMint("ipfs://QmSdS7VK16iZbPKuDWVmVMupHiKhYhDJTg1MV7RdfyLvi9");
+      setTxhash(tx.hash);
     } catch (error) {
       console.log(error);
     }
   }
 
+  useEffect(() => {
+    if (!txhash){
+      return
+    }
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const interval = setInterval(async () => {
+      const rx = await provider.getTransactionReceipt(txhash);
+      if (rx) {
+        refreshList();
+        setReceipt(rx);
+        clearInterval(interval); 
+      }
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, [refreshList, txhash]);
+  
   return (
     <>
       <div>
