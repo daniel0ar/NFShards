@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import placeholderImage from "public/placeholder.png";
 import Image from "next/image";
 import { ShardCard } from "@/components/ShardCard";
+import { useShards } from "@/hooks/useShards";
+import { WalletContext } from "@/context/WalletContext";
 
 export default function Home() {
+  const { selectedAddress, signer } = useContext(WalletContext);
+  const nfts = useShards(selectedAddress, signer);
   return (
     <section>
       <div className="p-4">
@@ -48,7 +52,7 @@ export default function Home() {
               created.
             </p>
           </div>
-          <ShardCard name={""} description={""} img={""}></ShardCard>
+          <ShardCard name={nfts[0]?.[2]} description={nfts[0]?.[1]} img={placeholderImage}></ShardCard>
           <a
             href="https://Shard.studio/"
             className="ring-1 lg:row-span-2 flex flex-col justify-between group hover:ring-primary/10 dark:hover:ring-white/20 duration-300 h-full dark:ring-white/10 ring-primary/5 lg:row-start-2 md:grid-cols-2 md:grid lg:gap-0 md:items-center md:gap-12 lg:grid-cols-none lg:col-start-2 lg:col-span-2 rounded-3xl p-8 bg-white dark:bg-secondary shadow-xl dark:shadow-thick"
