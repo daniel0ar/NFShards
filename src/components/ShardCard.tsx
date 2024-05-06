@@ -10,8 +10,8 @@ type Props = {
 export const ShardCard = ({name, description, img}: Props) => {
   return (
     <div className="ring-1 dark:ring-white/10 ring-primary/5 rounded-3xl justify-between shadow-xl dark:shadow-thick items-center flex flex-col p-8 h-full bg-white  dark:bg-secondary">
-            <div>
-              <p className="text-xl tracking-tight font-medium text-primary dark:text-white md:text-6xl">
+            <div className="w-full text-wrap break-words">
+              <p className="text-lg tracking-tight font-medium text-primary dark:text-white md:text-4xl">
                 {name}
               </p>
               <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
