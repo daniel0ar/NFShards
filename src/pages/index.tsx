@@ -7,7 +7,7 @@ import { WalletContext } from "@/context/WalletContext";
 
 export default function Home() {
   const { selectedAddress, signer } = useContext(WalletContext);
-  const { shards, refreshList } = useShards(selectedAddress, signer);
+  const { shards } = useShards(selectedAddress, signer);
 
   return (
     <section>
@@ -53,7 +53,7 @@ export default function Home() {
               created.
             </p>
           </div>
-          {shards?.length > 0 && <ShardCard name={shards[0]?.[2]} description={shards[0]?.[1]} img={placeholderImage}></ShardCard>}
+          {shards?.length > 0 && <ShardCard name={shards[0]?.[2]} description={shards[0]?.[1]} Image={placeholderImage}></ShardCard>}
           <a
             href="https://Shard.studio/"
             className="ring-1 lg:row-span-2 flex flex-col justify-between group hover:ring-primary/10 dark:hover:ring-white/20 duration-300 h-full dark:ring-white/10 ring-primary/5 lg:row-start-2 md:grid-cols-2 md:grid lg:gap-0 md:items-center md:gap-12 lg:grid-cols-none lg:col-start-2 lg:col-span-2 rounded-3xl p-8 bg-white dark:bg-secondary shadow-xl dark:shadow-thick"
@@ -74,8 +74,8 @@ export default function Home() {
               </p>
             </div>
             <div className="mt-8">
-              <img
-                src="/images/Shard.png"
+              <Image
+                src={placeholderImage}
                 className="rounded-2xl group-hover:ring-white/20 duration-300 invert dark:invert-0 aspect-[4/4] bg-primary/5 dark:bg-primary ring-1 ring-white/10  object-cover"
                 alt=""
               />
@@ -98,8 +98,8 @@ export default function Home() {
               </p>
             </div>
             <div className="mt-8">
-              <img
-                src="/images/Shard.png"
+              <Image
+                src={placeholderImage}
                 className="rounded-2xl group-hover:ring-white/20 duration-300 invert dark:invert-0 aspect-[4/4] bg-primary/5 dark:bg-primary ring-1 ring-white/10  object-cover"
                 alt=""
               />
@@ -125,8 +125,8 @@ export default function Home() {
               </p>
             </div>
             <div className="mt-8">
-              <img
-                src="/images/Shard.png"
+              <Image
+                src={placeholderImage}
                 className="rounded-2xl group-hover:ring-white/20 duration-300 invert dark:invert-0 aspect-[4/4] bg-primary/5 dark:bg-primary ring-1 ring-white/10  object-cover"
                 alt=""
               />
@@ -152,8 +152,8 @@ export default function Home() {
               </p>
             </div>
             <div className="mt-8">
-              <img
-                src="/images/Shard.png"
+              <Image
+                src={placeholderImage}
                 className="rounded-2xl group-hover:ring-white/20 duration-300 invert dark:invert-0 aspect-[4/4] bg-primary/5 dark:bg-primary ring-1 ring-white/10  object-cover"
                 alt=""
               />
