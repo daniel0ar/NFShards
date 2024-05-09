@@ -1,15 +1,19 @@
 import Image, { StaticImageData } from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Props = {
   name: string,
   description: string,
-  img: StaticImageData | string
+  img: StaticImageData | string,
+  address: string
 };
 
-export const ShardCard = ({name, description, img}: Props) => {
+export const ShardCard = ({name, description, img, address}: Props) => {
+  const router = useRouter();
+
   return (
-    <div className="ring-1 dark:ring-white/10 ring-primary/5 rounded-3xl justify-between shadow-xl dark:shadow-thick items-center flex flex-col p-8 h-full bg-white  dark:bg-secondary">
+    <div onClick={() => router.push(`shard/${address}`)} className="cursor-pointer ring-1 dark:ring-white/10 ring-primary/5 rounded-3xl justify-between shadow-xl dark:shadow-thick items-center flex flex-col p-8 h-full bg-white  dark:bg-secondary">
             <div className="w-full text-wrap break-words">
               <p className="text-lg tracking-tight font-medium text-primary dark:text-white md:text-4xl">
                 {name}
